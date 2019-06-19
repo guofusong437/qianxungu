@@ -1,0 +1,74 @@
+<wxs src="../../utils/fileters.wxs" module="filter"></wxs>
+<view class="calendar" 
+    style="{{activeStyle}}"
+>
+    <!-- 顶部导航栏 -->
+  <view class="topBar {{activeTopBar}}">
+      <view class="statuBar"></view>
+      <view class="navBar">
+          <view class="CancelText" bindtap="closeCalendar">X</view>
+          <view class="calendarIcon" >
+              <image src="../../images/calendarIcon.png" style="width:40rpx;height:40rpx" bindtap="showDailyList"></image>
+          </view>
+          <view></view>
+      </view>
+  </view>
+  <view class="dailyList {{activeDailyList}}">
+    <view class="statuBar"></view>
+    <view class="titleBar">
+        <text style="margin-left:20px;font-size:40rpx;color:gray">X</text>
+        <text style="justify-content:center;font-weight:bold">6月</text>
+        <text></text>
+    </view>
+    <view class="dailyBar">
+        <swiper style="height:100%">
+            <block wx:for="{{weeks}}" wx:for-item="days">
+                <swiper-item style="display:flex;">
+                    <view wx:for="{{days}}" class="day" wx:for-index="dayIndex">
+                        <view style="font-size:12px;margin-bottom:10px;color:gray">
+                        {{weeksDays[dayIndex]}}
+                        </view>
+
+                        <view class="dateCircle" style="background:lightgray url({{baseURL+imgUrls[dayIndex].imgURL}}) no-repeat center ;background-size:auto 100%;">
+                            {{filter.filterDate(item)}}
+                        </view>
+                    </view>
+                </swiper-item>
+            </block>
+        </swiper>
+    </view>
+  </view>
+  <!-- 轮播图 -->
+  <swiper indicator-dots="{{indicatorDots}}"
+    autoplay="{{autoplay}}"
+   interval="{{interval}}"
+   duration="{{duration}}"
+   current="{{imgUrls.length-1}}"
+   style="width:100%;height:100%"
+   class="{{activeSwiper}}"
+   >
+  <block wx:for="{{imgUrls}}" wx:key="{{item._id}}">
+    <swiper-item>
+        <view style="background:url({{baseURL+item.imgURL}}) no-repeat center;background-size:auto 100%;background-position-x:-60px;height:100%">
+            <view class="descriptionView {{activeDescView}}" 
+            bindtransitionend="transitionend">
+                <view class="dailyView">
+                    <view class="daily" style="font-size:80rpx">
+                        {{filter.filterTime(item.daily)[2]}}
+                    </view>
+                    <view class="daily" style="font-size:32rpx">
+                        <text>{{filter.filterTime(item.daily)[1]}}</text>
+                        <text style="margin-left:10px">{{filter.filterTime(item.daily)[3]}}</text>
+                    </view>
+                </view>
+                <view style="font-size:50rpx">{{item.description.content}}</view>
+                <view style="font-size:32rpx">
+                    <text>{{item.description.title}},</text>
+                    <text style="margin-left:10px">{{item.description.author}}</text>
+               </view>
+            </view>
+        </view>
+    </swiper-item>
+  </block>
+</swiper>
+</view>
